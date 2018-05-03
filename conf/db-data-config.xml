@@ -1,0 +1,14 @@
+<dataConfig>
+    <dataSource driver="org.relique.jdbc.csv.CsvDriver" url="jdbc:relique:csv:/var/solr/data/dih-csv-jdbc/csv" />
+    <document>
+        <entity name="item" transformer="TemplateTransformer" query="select * from hello">
+            <field column="id" name="id" />
+            <field column="name" name="name" />
+            <field column="address" name="address" />
+            <field column="phone" name="phone" />
+            <field column="age" name="age" />
+            <field column="join_date" name="join_date" />
+        </entity>
+    </document>
+</dataConfig>
+
