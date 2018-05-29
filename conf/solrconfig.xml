@@ -20,7 +20,7 @@
      For more details about configurations options that may appear in
      this file, see http://wiki.apache.org/solr/SolrConfigXml.
 -->
-<config name="drupal-4.4-solr-6.x" >
+<config name="drupal-4.4-solr-7.x" >
 
   <lib dir="/opt/solr/dist/" regex="solr-dataimporthandler-.*\.jar" />
   <lib dir="./lib/" regex="csvjdbc-.*\.jar" />
