@@ -65,25 +65,25 @@
     -->
 
     <!-- numeric field types that can be sorted, but are not optimized for range queries -->
-    <fieldType name="integer" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
-    <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
-    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
-    <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="integer" class="solr.IntPointField" docValues="true" />
+    <fieldType name="float" class="solr.FloatPointField" docValues="true" />
+    <fieldType name="long" class="solr.LongPointField" docValues="true" />
+    <fieldType name="double" class="solr.DoublePointField" docValues="true" />
 
     <!--
       Note:
       These should only be used for compatibility with existing indexes (created with older Solr versions)
-      or if "sortMissingFirst" or "sortMissingLast" functionality is needed. Use Trie based fields instead.
+      or if "sortMissingFirst" or "sortMissingLast" functionality is needed. Use Point based fields instead.
 
       Numeric field types that manipulate the value into
       a string value that isn't human-readable in its internal form,
       but with a lexicographic ordering the same as the numeric ordering,
       so that range queries work correctly.
     -->
-    <fieldType name="sint" class="solr.TrieIntField" sortMissingLast="true"/>
-    <fieldType name="sfloat" class="solr.TrieFloatField" sortMissingLast="true"/>
-    <fieldType name="slong" class="solr.TrieLongField" sortMissingLast="true"/>
-    <fieldType name="sdouble" class="solr.TrieDoubleField" sortMissingLast="true"/>
+    <fieldType name="sint" class="solr.IntPointField" docValues="true" />
+    <fieldType name="sfloat" class="solr.FloatPointField" docValues="true" />
+    <fieldType name="slong" class="solr.LongPointField" docValues="true" />
+    <fieldType name="sdouble" class="solr.DoublePointField" docValues="true" />
 
     <!--
      Numeric field types that index each value at various levels of precision
@@ -95,10 +95,10 @@
      indexed per value, slightly larger index size, and faster range queries.
      A precisionStep of 0 disables indexing at different precision levels.
     -->
-    <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" positionIncrementGap="0"/>
-    <fieldType name="tfloat" class="solr.TrieFloatField" precisionStep="8" positionIncrementGap="0"/>
-    <fieldType name="tlong" class="solr.TrieLongField" precisionStep="8" positionIncrementGap="0"/>
-    <fieldType name="tdouble" class="solr.TrieDoubleField" precisionStep="8" positionIncrementGap="0"/>
+    <fieldType name="tint" class="solr.IntPointField" docValues="true" />
+    <fieldType name="tfloat" class="solr.FloatPointField" docValues="true" />
+    <fieldType name="tlong" class="solr.LongPointField" docValues="true" />
+    <fieldType name="tdouble" class="solr.DoublePointField" docValues="true" />
 
     <!--
      The ExternalFileField type gets values from an external file instead of the
@@ -126,14 +126,14 @@
                   ... 6 months and 3 days in the future from the start of
                       the current day
 
-         Consult the TrieDateField javadocs for more information.
+         Consult the DatePointField javadocs for more information.
 
          Note: For faster range queries, consider the tdate type
       -->
-    <fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0" sortMissingLast="true" omitNorms="true"/>
+    <fieldType name="date" class="solr.DatePointField" docValues="true" />
 
-    <!-- A Trie based date field for faster date range queries and date faceting. -->
-    <fieldType name="tdate" class="solr.TrieDateField" precisionStep="6" positionIncrementGap="0"/>
+    <!-- A Point based date field for faster date range queries and date faceting. -->
+    <fieldType name="tdate" class="solr.DatePointField" docValues="true" />
 
     <!-- solr.TextField allows the specification of custom text analyzers
          specified as a tokenizer and a list of token filters. Different
@@ -174,14 +174,14 @@
         <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
         <!-- in this example, we will only use synonyms at query time
-        <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
         -->
         <!-- Case insensitive stop word removal. -->
         <filter class="solr.StopFilterFactory"
                 ignoreCase="true"
                 words="stopwords.txt"
                 />
-        <filter class="solr.WordDelimiterFilterFactory"
+        <filter class="solr.WordDelimiterGraphFilterFactory"
                 protected="protwords.txt"
                 generateWordParts="1"
                 generateNumberParts="1"
@@ -199,12 +199,12 @@
       <analyzer type="query">
         <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-        <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.StopFilterFactory"
                 ignoreCase="true"
                 words="stopwords.txt"
                 />
-        <filter class="solr.WordDelimiterFilterFactory"
+        <filter class="solr.WordDelimiterGraphFilterFactory"
                 protected="protwords.txt"
                 generateWordParts="1"
                 generateNumberParts="1"
@@ -221,12 +221,12 @@
       <analyzer type="multiterm">
         <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-        <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.StopFilterFactory"
                 ignoreCase="true"
                 words="stopwords.txt"
                 />
-        <filter class="solr.WordDelimiterFilterFactory"
+        <filter class="solr.WordDelimiterGraphFilterFactory"
                 protected="protwords.txt"
                 generateWordParts="1"
                 generateNumberParts="1"
@@ -247,7 +247,7 @@
       <analyzer type="index">
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
-        <filter class="solr.WordDelimiterFilterFactory"
+        <filter class="solr.WordDelimiterGraphFilterFactory"
                 protected="protwords.txt"
                 generateWordParts="1"
                 generateNumberParts="1"
@@ -260,12 +260,12 @@
       </analyzer>
       <analyzer type="query">
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-        <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.StopFilterFactory"
                 ignoreCase="true"
                 words="stopwords.txt"
                 />
-        <filter class="solr.WordDelimiterFilterFactory"
+        <filter class="solr.WordDelimiterGraphFilterFactory"
                 protected="protwords.txt"
                 generateWordParts="1"
                 generateNumberParts="1"
@@ -278,12 +278,12 @@
       </analyzer>
       <analyzer type="multiterm">
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-        <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.StopFilterFactory"
                 ignoreCase="true"
                 words="stopwords.txt"
                 />
-        <filter class="solr.WordDelimiterFilterFactory"
+        <filter class="solr.WordDelimiterGraphFilterFactory"
                 protected="protwords.txt"
                 generateWordParts="1"
                 generateNumberParts="1"
@@ -370,7 +370,7 @@
       -->
     <fieldType name="rand" class="solr.RandomSortField" indexed="true" />
 
-    <!-- Fulltext type for matching words based on how they sound – i.e.,
+    <!-- Fulltext type for matching words based on how they sound â€“ i.e.,
          "phonetic matching".
       -->
     <fieldType name="phonetic" class="solr.TextField" >
@@ -398,12 +398,12 @@
     <fieldType name="point" class="solr.PointType" dimension="2" subFieldType="tdouble"/>
 
     <!-- A specialized field for geospatial search. If indexed, this fieldType must not be multivalued. -->
-    <fieldType name="location" class="solr.LatLonType" subFieldType="tdouble"/>
+    <fieldType name="location" class="solr.LatLonPointSpatialField" docValues="true" />
 
     <!-- A Geohash is a compact representation of a latitude longitude pair in a single field.
          See http://wiki.apache.org/solr/SpatialSearch
      -->
-    <fieldtype name="geohash" class="solr.GeoHashField"/>
+    <fieldtype name="geohash" class="solr.LatLonPointSpatialField" docValues="true" />
 
     <!-- Improved location type which supports advanced functionality like
          filtering by polygons or other shapes, indexing shapes, multi-valued
@@ -417,7 +417,7 @@
      relevancy. -->
     <fieldType name="bbox" class="solr.BBoxField"
                geo="true" distanceUnits="kilometers" numberType="_bbox_coord" />
-    <fieldType name="_bbox_coord" class="solr.TrieDoubleField" precisionStep="8" docValues="true" stored="false"/>
+    <fieldType name="_bbox_coord" class="solr.DoublePointField" docValues="true" />
 
   </types>
 
@@ -437,7 +437,7 @@
        required, doc values will make the index faster to load, more
        NRT-friendly and more memory-efficient. They however come with some
        limitations: they are currently only supported by StrField, UUIDField
-       and all Trie*Fields, and depending on the field type, they might
+       and all *PointFields, and depending on the field type, they might
        require the field to be single-valued, be required or have a default
        value (check the documentation of the field type you're interested in
        for more information)
