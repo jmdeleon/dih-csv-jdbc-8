@@ -22,7 +22,7 @@
 -->
 <config name="drupal-4.4-solr-7.x" >
 
-  <lib dir="${solr.install.dir}/dist/" regex="solr-dataimporthandler-.*\.jar" />
+  <lib dir="./lib/" regex="data-import-handler-.*\.jar" />
   <lib dir="./lib/" regex="csvjdbc-.*\.jar" />
 
   <!-- In all configuration below, a prefix of "solr." for class names
@@ -51,7 +51,7 @@
        that you fully re-index after changing this setting as it can
        affect both how text is indexed and queried.
     -->
-  <luceneMatchVersion>${solr.luceneMatchVersion:LUCENE_60}</luceneMatchVersion>
+  <luceneMatchVersion>8.0.0</luceneMatchVersion>
 
   <!-- <lib/> directives can be used to instruct Solr to load any Jars
        identified and use them to resolve any "plugins" specified in
@@ -77,8 +77,8 @@
   <!-- A "dir" option by itself adds any files found in the directory to the
        classpath, this is useful for including all jars in a directory.
     -->
-  <lib dir="${solr.contrib.dir:../../../contrib}/extraction/lib" />
-  <lib dir="${solr.contrib.dir:../../../contrib}/clustering/lib/" />
+  <!-- lib dir="${solr.contrib.dir:../../../contrib}/extraction/lib" / -->
+  <!-- lib dir="${solr.contrib.dir:../../../contrib}/clustering/lib/" / -->
 
   <!-- The velocity library has been known to crash Solr in some
        instances when deployed as a war file to Tomcat. Therefore all

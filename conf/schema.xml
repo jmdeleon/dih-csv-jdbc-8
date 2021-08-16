@@ -422,9 +422,11 @@
   </types>
 
   <!-- Following is a dynamic way to include other types, added by other contrib modules -->
+  <!--
   <xi:include href="schema_extra_types.xml" xmlns:xi="http://www.w3.org/2001/XInclude">
     <xi:fallback></xi:fallback>
   </xi:include>
+  -->
 
    <!-- Valid attributes for fields:
      name: mandatory - the name for the field
@@ -482,9 +484,11 @@
   </fields>
 
   <!-- Following is a dynamic way to include other fields, added by other contrib modules -->
+  <!--
   <xi:include href="schema_extra_fields.xml" xmlns:xi="http://www.w3.org/2001/XInclude">
     <xi:fallback></xi:fallback>
   </xi:include>
+  -->
 
   <!-- Field to use to determine and enforce document uniqueness.
        Unless this field is marked with required="false", it will be a required field
